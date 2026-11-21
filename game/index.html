@@ -104,7 +104,7 @@ function update(dt){
  for(const pd of peds){if(pd.flee>0){pd.flee-=dt;pd.x+=Math.cos(pd.angle)*90*dt;pd.y+=Math.sin(pd.angle)*90*dt}else{pd.x+=Math.cos(pd.angle)*pd.speed*dt;pd.y+=Math.sin(pd.angle)*pd.speed*dt;if(Math.random()<dt*0.1)pd.angle+= (Math.random()-0.5)*2;if(hitBuilding(pd.x,pd.y,8))pd.angle+=Math.PI/2}pd.x=clamp(pd.x,20,3180);pd.y=clamp(pd.y,20,2380)}
  // police
  for(const p of police){const a=Math.atan2(S.y-p.y,S.x-p.x);let da=a-p.angle;while(da>Math.PI)da-=2*Math.PI;while(da<-Math.PI)da+=2*Math.PI;p.angle+=clamp(da,-2.4*dt,2.4*dt);p.speed=clamp(p.speed+220*dt,0,300);p.x+=Math.cos(p.angle)*p.speed*dt;p.y+=Math.sin(p.angle)*p.speed*dt;p.siren+=dt;if(p.siren>0.9){p.siren=0;sfx.siren()}
-   if(dist(p.x,p.y,S.x,S.y)<34){S.hp-=22*dt;effects.push({x:S.x,y:S.y,t:0.3,txt:'BUSTED?'});
+   if(dist(p.x,p.y,S.x,S.y)<34){S.hp-=22*dt;effects.push({x:S.x,y:S.y,t:0.3,txt:'RAMMED!'});
      if(S.inCar){S.inCar.hp-=20*dt;if(S.inCar.hp<=0){S.inCar.dead=true;S.inCar=null;S.onFoot=true;say('Your car is wrecked!')}}
      if(S.hp<=0){S.hp=0;S.dead=true;say('Busted by the Solano PD')}}}
  police=police.filter(p=>p.hp>0&&dist(p.x,p.y,S.x,S.y)<1200);
@@ -203,7 +203,7 @@ function draw(){
   ctx.fillStyle='#888';ctx.font='14px sans-serif';ctx.fillText('Original game. No Rockstar / GTA names, characters, maps, art or music.',640,490);
  }
 }
-function startGame(){audio();S.started=true;if(SHOT==='chase'){S.inCar=cars[15]||cars[0];S.onFoot=false;S.wanted=3;S.mission=2;S.missionTimer=0;spawnPolice(3)}if(SHOT==='mission'){S.mission=3;S.x=700;S.y=600}if(SHOT==='drive'){S.inCar=cars[15]||cars[0];S.onFoot=false;S.mission=1}if(SHOT==='play'){S.x=1600;S.y=1200}}
+function startGame(){audio();S.started=true;if(SHOT==='chase'){S.inCar=cars[15]||cars[0];S.onFoot=false;S.wanted=3;S.mission=2;S.missionTimer=0;spawnPolice(3)}if(SHOT==='mission'){S.mission=3;S.x=800;S.y=600}if(SHOT==='drive'){S.inCar=cars[15]||cars[0];S.onFoot=false;S.mission=1}if(SHOT==='play'){S.x=1600;S.y=1200}}
 cv.addEventListener('click',()=>{if(!S.started)startGame()});
 addEventListener('keydown',e=>{if(e.key==='Enter'&&!S.started)startGame()});
 if(SHOT&&SHOT!=='start'){load();setTimeout(()=>{if(!S.started)startGame()},300)}
