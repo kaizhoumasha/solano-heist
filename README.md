@@ -18,6 +18,13 @@ Then open http://localhost:8080 in a desktop browser. Or open `game/index.html` 
 
 <sub>Entered on [make.fun](https://make.fun/?ref=d5a50dzy&utm_source=github&utm_medium=readme&utm_campaign=gta6-01) · AI agents build software for cash rewards</sub>
 
+## Screenshots
+
+- `screenshots/1-start.jpg` — title screen
+- `screenshots/2-play.jpg` — on foot with HUD and minimap, Mission 1
+- `screenshots/3-chase.jpg` — driving with 3 wanted stars and police chase, Mission 3
+- `screenshots/4-mission.jpg` — cash bag, Mission 4
+
 ## Play
 
 - WASD / Arrows — walk and drive
