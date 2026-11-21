@@ -71,7 +71,7 @@ const keys={}, mouse={x:640,y:360,down:false};
 addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key===' '){e.preventDefault();punch()}if(e.key.toLowerCase()==='e')enterExitCar();if(e.key.toLowerCase()==='p')S.paused=!S.paused;if(e.key.toLowerCase()==='m'){muted=!muted;say(muted?'Sound muted':'Sound on')}if(e.key.toLowerCase()==='r'&&S.dead)restart()});
 addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false});
 cv.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();mouse.x=(e.clientX-r.left)/r.width*1280;mouse.y=(e.clientY-r.top)/r.height*720});
-cv.addEventListener('mousedown',e=>{if(!S.started||S.paused||S.dead||S.win)return;shoot()});
+cv.addEventListener('mousedown',e=>{if(!S.started){startGame();startClickPending=false;return}if(S.paused||S.dead||S.win)return;if(startClickPending){startClickPending=false;return}shoot()});
 function punch(){if(!S.started||S.onFoot===false)return;let hit=false;for(const p of police){if(dist(S.x,S.y,p.x,p.y)<70){p.hp-=25;hit=true;effects.push({x:p.x,y:p.y,t:0.4,txt:'-25'})}}for(const pd of peds){if(dist(S.x,S.y,pd.x,pd.y)<50){pd.flee=3;hit=true}}if(hit){sfx.hit();S.shots++}}
 function shoot(){if(S.ammo<=0){say('Out of ammo — find an ammo pickup');tone(120,.1,'square',.05);return}S.ammo--;S.shots++;const cam=camera();const wx=cam.x+mouse.x,wy=cam.y+mouse.y;const a=Math.atan2(wy-S.y,wx-S.x);bullets.push({x:S.x,y:S.y,angle:a,speed:900,life:0.8});sfx.shoot()}
 function enterExitCar(){if(!S.started||S.dead)return;if(S.inCar){const c=S.inCar;S.inCar=null;S.onFoot=true;S.x=c.x+40;S.y=c.y;return}let best=null,bd=90;for(const c of cars){if(c.dead)continue;const d=dist(S.x,S.y,c.x,c.y);if(d<bd){bd=d;best=c}}if(best){if(best.parked||best.traffic){S.inCar=best;S.onFoot=false;best.parked=false;best.traffic=false;addWanted(1);say('Car stolen — wanted +1 star');sfx.car()}else{S.inCar=best;S.onFoot=false}}}
@@ -203,7 +203,8 @@ function draw(){
   ctx.fillStyle='#888';ctx.font='14px sans-serif';ctx.fillText('Original game. No Rockstar / GTA names, characters, maps, art or music.',640,490);
  }
 }
-function startGame(){audio();S.started=true;if(SHOT==='chase'){S.inCar=cars[15]||cars[0];S.onFoot=false;S.wanted=3;S.mission=2;S.missionTimer=0;spawnPolice(3)}if(SHOT==='mission'){S.mission=3;S.x=800;S.y=600}if(SHOT==='drive'){S.inCar=cars[15]||cars[0];S.onFoot=false;S.mission=1}if(SHOT==='play'){S.x=1600;S.y=1200}}
+let startClickPending=false;
+function startGame(){audio();S.started=true;startClickPending=true;if(SHOT==='chase'){S.inCar=cars[15]||cars[0];S.onFoot=false;S.wanted=3;S.mission=2;S.missionTimer=0;spawnPolice(3)}if(SHOT==='mission'){S.mission=3;S.x=800;S.y=600}if(SHOT==='drive'){S.inCar=cars[15]||cars[0];S.onFoot=false;S.mission=1}if(SHOT==='play'){S.x=1600;S.y=1200}}
 cv.addEventListener('click',()=>{if(!S.started)startGame()});
 addEventListener('keydown',e=>{if(e.key==='Enter'&&!S.started)startGame()});
 if(SHOT&&SHOT!=='start'){load();setTimeout(()=>{if(!S.started)startGame()},300)}

@@ -32,9 +32,11 @@ screen, and a save in localStorage.
 
 ## Note on entry plumbing
 
-The kit starter's `main.ts` / `serve.ts` / `vendor/makefun-game.ts` were
-NOT copied into this repo in this session: an execution-risk check flagged
-the kit starter content, so copying or running it was held pending explicit
-confirmation from the parent agent. Before submitting, the parent must
-confirm that step, then add the starter plumbing (main.ts, serve.ts,
-vendor/, MIT LICENSE) and run the kit's local grade until valid.
+`main.ts` / `serve.ts` / `vendor/makefun-game.ts` are the kit starter's
+plumbing, copied unchanged except for the header comment in `main.ts`
+(naming this game instead of the starter's Block Dodger). `main.ts` copies
+`game/` and `screenshots/` to `/output` and writes `dossier.json` with the
+vendored library. The start click does not fire a shot: the first click
+after the game starts is consumed as the start click, and the next click
+shoots normally (verified in a real browser: Ammo stays 24 after the start
+click, then drops to 23 on the next click).
