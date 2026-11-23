@@ -1,0 +1,7 @@
+"use strict";
+/* Solano Heist — audio: all sound is synthesized with WebAudio, no files. */
+let AC = null, muted = false;
+function audio(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function tone(f,d=0.12,type='square',v=0.06,slide=0){const a=audio();if(!a||muted)return;const o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=f;if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(20,f+slide),a.currentTime+d);g.gain.setValueAtTime(v,a.currentTime);g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+d);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+d)}
+function noise(d=0.15,v=0.08){const a=audio();if(!a||muted)return;const n=a.sampleRate*d,buf=a.createBuffer(1,n,a.sampleRate),ch=buf.getChannelData(0);for(let i=0;i<n;i++)ch[i]=(Math.random()*2-1)*(1-i/n);const s=a.createBufferSource(),g=a.createGain();g.gain.value=v;s.buffer=buf;s.connect(g).connect(a.destination);s.start()}
+const sfx = {pickup:()=>tone(880,.12,'sine',.08,440),coin:()=>{tone(660,.08,'sine',.07);setTimeout(()=>tone(990,.1,'sine',.07),70)},shoot:()=>noise(.12,.12),hit:()=>tone(160,.15,'sawtooth',.08,-80),siren:()=>{tone(700,.25,'sine',.03,300);setTimeout(()=>tone(950,.25,'sine',.03,-250),260)},win:()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,.18,'sine',.08),i*120))},car:()=>tone(90,.2,'sawtooth',.05,40)};

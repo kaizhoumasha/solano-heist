@@ -20,10 +20,10 @@ Then open http://localhost:8080 in a desktop browser. Or open `game/index.html` 
 
 ## Screenshots
 
-- `screenshots/1-start.jpg` — title screen
-- `screenshots/2-play.jpg` — on foot with HUD and minimap, Mission 1
-- `screenshots/3-chase.jpg` — driving with 3 wanted stars and police chase, Mission 3
-- `screenshots/4-mission.jpg` — cash bag, Mission 4
+- `screenshots/1-chase.jpg` — cover: police chase at 5 wanted stars, minimap and Mission 3 objective on the HUD
+- `screenshots/2-drive.jpg` — driving through the city, Mission 2
+- `screenshots/3-mission.jpg` — cash bag, Mission 4
+- `screenshots/4-foot.jpg` — on foot with HUD and minimap, Mission 1
 
 ## Play
 
@@ -40,7 +40,7 @@ City to explore on foot and by car, traffic and pedestrians, cars to steal and d
 
 ## Files
 
-- `game/index.html` — the whole game (Canvas 2D, no build step)
+- `game/index.html` — thin shell (Canvas 2D, no build step) loading `game/js/` — one file per job: `core.js` (state/save), `world.js` (city map), `audio.js` (synth sound), `vehicles.js` (traffic/pedestrians), `police.js` (wanted level/chase), `missions.js` (story), `combat.js` (shooting/punching), `player.js` (input/movement), `hud.js` (HUD/minimap), `main.js` (game loop)
 - `screenshots/` — 4 real renders of the game in a browser
 - `main.ts` — entry program (see note below)
 
